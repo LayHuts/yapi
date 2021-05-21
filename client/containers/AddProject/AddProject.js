@@ -107,7 +107,9 @@ class ProjectList extends Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <div className="g-row">
-        <div className="g-row m-container">
+        {/*修改原有样式，设置container高度*/}
+        {/*<div className="g-row m-container">*/}
+        <div className="g-row m-container" style={{ minHeight: 'calc(100vh - 100px)' }}>
           <Form>
             <FormItem {...formItemLayout} label="项目名称">
               {getFieldDecorator('name', {

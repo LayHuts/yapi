@@ -62,7 +62,9 @@ class Follows extends Component {
     return (
       <div>
         <div className="g-row" style={{ paddingLeft: '32px', paddingRight: '32px' }}>
-          <Row gutter={16} className="follow-box pannel-without-tab">
+          {/*修改原有样式，设置Row高度*/}
+          {/*<Row gutter={16} className="follow-box pannel-without-tab">*/}
+          <Row gutter={16} className="follow-box pannel-without-tab" style={{ minHeight: 'calc(100vh - 100px)' }}>
             {data.length ? (
               data.map((item, index) => {
                 return (

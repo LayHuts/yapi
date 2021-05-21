@@ -34,7 +34,7 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loginType: 'ldap'
+      loginType: 'normal'
     };
   }
 
@@ -96,7 +96,7 @@ class Login extends Component {
         {/* 登录类型 (普通登录／LDAP登录) */}
         {isLDAP && (
           <FormItem>
-            <RadioGroup defaultValue="ldap" onChange={this.handleFormLayoutChange}>
+            <RadioGroup defaultValue="normal" onChange={this.handleFormLayoutChange}>
               <Radio value="ldap">LDAP</Radio>
               <Radio value="normal">普通登录</Radio>
             </RadioGroup>
@@ -104,7 +104,7 @@ class Login extends Component {
         )}
         {/* 用户名 (Email) */}
         <FormItem style={formItemStyle}>
-          {getFieldDecorator('email', { rules: [emailRule] })(
+          {getFieldDecorator('email', {rules: [emailRule] })(
             <Input
               style={changeHeight}
               prefix={<Icon type="user" style={{ fontSize: 13 }} />}

@@ -70,7 +70,8 @@ export default class Group extends Component {
     if(this.state.groupId === -1)return <Spin />
     const GroupContent = (
       <Layout style={{ minHeight: 'calc(100vh - 100px)', marginLeft: '24px', marginTop: '24px' }}>
-        <Sider style={{ height: '100%' }} width={300}>
+        {/*去除高度让左侧sider高度铺满父容器<Sider style={{ height: '100%' }} width={300}>*/}
+        <Sider width={300}>
           <div className="logo" />
           <GroupList />
         </Sider>

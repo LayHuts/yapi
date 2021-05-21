@@ -6,6 +6,7 @@ const LOGIN_OUT = 'yapi/user/LOGIN_OUT';
 const LOGIN_TYPE = 'yapi/user/LOGIN_TYPE';
 const GET_LOGIN_STATE = 'yapi/user/GET_LOGIN_STATE';
 const REGISTER = 'yapi/user/REGISTER';
+const ADD_USER = 'yapi/user/ADD_USER';
 const SET_BREADCRUMB = 'yapi/user/SET_BREADCRUMB';
 const CHANGE_STUDY_TIP = 'yapi/user/CHANGE_STUDY_TIP';
 const FINISH_STUDY = 'yapi/user/FINISH_STUDY';
@@ -99,6 +100,11 @@ export default (state = initialState, action) => {
         study: action.payload.data.data ? action.payload.data.data.study : false
       };
     }
+	case ADD_USER: {
+      return {
+        ...state
+      };
+    }
     case SET_BREADCRUMB: {
       return {
         ...state,
@@ -164,7 +170,18 @@ export function regActions(data) {
     payload: axios.post('/api/user/reg', param)
   };
 }
-
+export function addUserActions(data) {
+  const { email, password, userName } = data;
+  const param = {
+    email,
+    password,
+    username: userName
+  };
+  return {
+    type: ADD_USER,
+    payload: axios.post('/api/user/addUser', param)
+  };
+}
 export function logoutActions() {
   return {
     type: LOGIN_OUT,

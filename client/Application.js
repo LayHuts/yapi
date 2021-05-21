@@ -3,11 +3,12 @@ import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Route, BrowserRouter as Router } from 'react-router-dom';
-import { Home, Group, Project, Follows, AddProject, Login } from './containers/index';
+//import { Home, Group, Project, Follows, AddProject, Login } from './containers/index';
+import { Group, Project, Follows, AddProject, Login } from './containers/index';//去除home引入，
 import { Alert } from 'antd';
 import User from './containers/User/User.js';
 import Header from './components/Header/Header';
-import Footer from './components/Footer/Footer';
+//import Footer from './components/Footer/Footer';
 import Loading from './components/Loading/Loading';
 import MyPopConfirm from './components/MyPopConfirm/MyPopConfirm';
 import { checkLoginState } from './reducer/modules/user';
@@ -36,7 +37,8 @@ const alertContent = () => {
 let AppRoute = {
   home: {
     path: '/',
-    component: Home
+    //component: Home //默认不展示home首页，直接显示登陆页
+	component:Login
   },
   group: {
     path: '/group',
@@ -142,7 +144,7 @@ export default class App extends Component {
                 {/* <Route path="/statistic" component={statisticsPage} /> */}
               {/* </div> */}
             </div>
-            <Footer />
+            {/*去除底部footer <Footer />*/}
           </div>
         </Router>
       );

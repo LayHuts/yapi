@@ -34,9 +34,14 @@ export default class LoginWrap extends Component {
         <TabPane tab="登录" key="1">
           <LoginForm />
         </TabPane>
-        <TabPane tab={"注册"} key="2">
+        {/*如果关闭注册则不显示注册模块<TabPane tab={"注册"} key="2">
           {canRegister ? <RegForm /> : <div style={{minHeight: 200}}>管理员已禁止注册，请联系管理员</div>}
-        </TabPane>
+        </TabPane>*/}
+        {(!canRegister) && (
+          <TabPane tab={"注册"} key="2">
+            <RegForm /> 
+          </TabPane>
+        )}
       </Tabs>
     );
   }

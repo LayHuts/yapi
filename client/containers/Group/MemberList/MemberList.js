@@ -119,7 +119,7 @@ class MemberList extends Component {
       this.props.delMember({ id, member_uid }).then(res => {
         if (!res.payload.data.errcode) {
           message.success(res.payload.data.errmsg);
-          this.reFetchList(); // 添加成功后重新获取分组成员列表
+          this.reFetchList(); // 删除成功后重新获取分组成员列表
         }
       });
     };

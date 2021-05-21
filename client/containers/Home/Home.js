@@ -357,7 +357,7 @@ class Home extends Component {
     return (
       <div className="home-main">
         <HomeGuest introList={this.props.introList} />
-        <div className="row-tip">
+        {/*<div className="row-tip">
           <div className="container">
             <div className="tip-title">
               <h3 className="title">准备好使用了吗？</h3>
@@ -378,7 +378,7 @@ class Home extends Component {
               </div>
             </div>
           </div>
-        </div>
+        </div>*/}
       </div>
     );
   }

@@ -1,15 +1,17 @@
 import React, { PureComponent as Component } from 'react';
 import { formatTime } from '../../common.js';
 import { Link } from 'react-router-dom';
-import { setBreadcrumb } from '../../reducer/modules/user';
-//import PropTypes from 'prop-types'
+import { addUserActions, setBreadcrumb } from '../../reducer/modules/user';
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { Table, Popconfirm, message, Input } from 'antd';
+import { Form, Table, Popconfirm, message, Input, Button, Modal} from 'antd';
 import axios from 'axios';
 
 const Search = Input.Search;
 const limit = 20;
+
+const FormItem = Form.Item;
+
 @connect(
   state => {
     return {
@@ -17,7 +19,8 @@ const limit = 20;
     };
   },
   {
-    setBreadcrumb
+    setBreadcrumb,
+    addUserActions
   }
 )
 class List extends Component {
@@ -28,12 +31,15 @@ class List extends Component {
       total: null,
       current: 1,
       backups: [],
-      isSearch: false
+      isSearch: false,
+      addUserVisible:false
     };
   }
   static propTypes = {
+    form: PropTypes.object,
     setBreadcrumb: PropTypes.func,
-    curUserRole: PropTypes.string
+    curUserRole: PropTypes.string,
+	addUserActions:PropTypes.func
   };
   changePage = current => {
     this.setState(
@@ -126,13 +132,34 @@ class List extends Component {
       });
     }
   };
-
+  //新增用户
+  handleSubmit = e => {
+    e.preventDefault();
+    const form = this.props.form;
+    form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        this.props.addUserActions({...values}).then(res => {
+          if (res.payload.data.errcode == 0) {
+            this.setState({
+              addUserVisible:false
+            },()=>{
+              this.getUserList()
+              message.success('新增成功! ');
+            })
+          }
+        });
+      }
+    });
+  };
   render() {
+    const {getFieldDecorator} = this.props.form;
     const role = this.props.curUserRole;
     let data = [];
     if (role === 'admin') {
       data = this.state.data;
-    }
+    }else{
+      this.setState({total:0});
+	}
     let columns = [
       {
         title: '用户名',
@@ -205,27 +232,85 @@ class List extends Component {
       pageSize: limit,
       current: 1
     };
+    const layout = {
+        labelCol: {
+            span: 4
+        },
+        wrapperCol: {
+            span: 16
+        }
+    };
 
     return (
       <section className="user-table">
+        <h3 style={{ marginBottom: '15px' }}>用户总数：{this.state.total}位</h3>
         <div className="user-search-wrapper">
-          <h2 style={{ marginBottom: '10px' }}>用户总数：{this.state.total}位</h2>
-          <Search
-            onChange={e => this.handleSearch(e.target.value)}
-            onSearch={this.handleSearch}
-            placeholder="请输入用户名"
+          <Search onChange={e => this.handleSearch(e.target.value)}
+              onSearch={this.handleSearch} 
+              placeholder="请输入用户名"
           />
+          <Button onClick={() => this.setState({ addUserVisible: true })} type={'primary'}>新增用户</Button>
         </div>
         <Table
-          bordered={true}
-          rowKey={record => record._id}
-          columns={columns}
-          pagination={this.state.isSearch ? defaultPageConfig : pageConfig}
-          dataSource={data}
-        />
+            bordered={true}
+            rowKey={record => record._id}
+            columns={columns}
+            pagination={this.state.isSearch ? defaultPageConfig : pageConfig}
+            dataSource={data}
+          />
+        {this.state.addUserVisible ? (
+          <Modal title="新增用户" visible={this.state.addUserVisible}
+              onCancel={() => this.setState({ addUserVisible: false })}
+              onOk={this.handleSubmit}
+              // footer={null}
+              className="addusermodal"
+          >
+            <Form  onSubmit={this.handleSubmit}>
+              {/* 用户名 */}
+              <FormItem {...layout} label={'用户名'}>
+                {getFieldDecorator('userName', {
+                        rules: [{ required: true, message: '请输入用户名' }]
+                      })(
+                        <Input/>
+                      )}
+              </FormItem>
+              {/* Emaiil */}
+              <FormItem {...layout} label={'Email'}>
+                {getFieldDecorator('email', {
+                  rules: [
+                    {
+                      required: true,
+                      message: '请输入email',
+                      pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{1,})+$/
+                    }
+                  ]
+                })(
+                  <Input/>
+                )}
+              </FormItem>
+              {/* password */}
+              <FormItem {...layout} label={'密码'}>
+                {getFieldDecorator('password', {
+                  rules: [
+                    {
+                      required: true,
+                      message: '请输入密码!'
+                    }
+                  ],
+                  initlValue: '123456'
+                  })(
+                    <Input/>
+                  )}
+              </FormItem>
+            </Form>
+          </Modal>
+        ): (
+          ''
+        )}
       </section>
     );
   }
 }
 
-export default List;
+const ListForm = Form.create()(List);
+export default ListForm;
