@@ -111,6 +111,7 @@
     "copy-webpack-plugin": "^4.0.1",
     "core-decorators": "^0.17.0",
     "css-loader": "^0.28.4",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^3.19.0",
     "eslint-loader": "^1.9.0",
     "eslint-plugin-import": "^2.2.0",
@@ -176,6 +177,9 @@
       "subjectPattern": ".+",
       "subjectPatternErrorMsg": "请输入message信息!",
       "helpMessage": "Commit message 格式错误， http://www.ruanyifeng.com/blog/2016/01/commit_message_change_log.html"
+    },
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
     }
   },
   "engines": {
